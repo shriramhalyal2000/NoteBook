@@ -25,8 +25,8 @@ services:
       - "5000:5000"
     environment:
       # Backend must use credentials when Mongo requires auth:
-      - MONGO_URI: mongodb://admin:passwd@mongo:27017/notebook?authSource=admin
-      - JWT_SECRET: thisisthemostsecureserver
+      MONGO_URI: mongodb://admin:passwd@mongo:27017/notebook?authSource=admin
+      JWT_SECRET: thisisthemostsecureserver
     networks:
       - app-network
 
