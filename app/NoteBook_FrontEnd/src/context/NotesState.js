@@ -1,10 +1,10 @@
 import { useState } from "react";
-import {NoteContext} from "./CreateContext";
+import { NoteContext } from "./CreateContext";
 
 const NoteState = (props) => {
   const notesInitial = []
   const [notes, setNotes] = useState(notesInitial)
-  const host = process.env.REACT_APP_HOST_URI;
+  const host = process.env.REACT_APP_HOST_URI || '';
 
 
 
