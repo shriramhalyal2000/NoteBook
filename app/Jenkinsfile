@@ -1,0 +1,13 @@
+pipeline{
+  agent any{
+    stages{
+      stage(commit){
+        echo "sh commit"
+      }
+      stage("Docker Pull"){
+        echo"Pulling docker images from the repo"
+        sh" ${DOCKER_IMG}"
+      }
+    }
+  }
+}
