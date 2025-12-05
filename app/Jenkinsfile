@@ -1,21 +1,12 @@
 pipeline{
   agents any 
-  environment{
-    IMAGE_FRONTEND= "shriram2105/notebook-frontend"
-    IMAGE_BACKEND= "shriram2105/notebook-backend"
-    COMPOSE_FILE= "app.docker-compose.yaml"
-    IMG_TAG="$(env.BUILD_NUMBER)"
+  options{
+    timeout(time: 1, unit: 'SECONDS')
   }
   stages{
-    stage("checkout"){
+    stage('Example'){
       steps{
-        checkout scm
-      }
-    }
-    stage("Build Image"){
-      steps{
-        def tag = "${env.BUILD_NUMBER}"
-
+        echo "hellow world"
       }
     }
   }
