@@ -1,10 +1,21 @@
 pipeline{
   agents any 
-  environment
+  environment{
+    IMAGE_FRONTEND= "shriram2105/notebook-frontend"
+    IMAGE_BACKEND= "shriram2105/notebook-backend"
+    COMPOSE_FILE= "app.docker-compose.yaml"
+    IMG_TAG="$(env.BUILD_NUMBER)"
+  }
   stages{
-    stage(){
+    stage("checkout"){
       steps{
-        
+        checkout scm
+      }
+    }
+    stage("Build Image"){
+      steps{
+        def tag = "${env.BUILD_NUMBER}"
+
       }
     }
   }
