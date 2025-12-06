@@ -1,6 +1,6 @@
 pipeline{
   agent any 
-  environment{}
+  environment{
     REGISTRY= "shriram2105"
     IMAGE_FRONTEND= "notebook-frontend"
     IMAGE_BACKEND= "notebook-backend"
@@ -46,5 +46,8 @@ pipeline{
         """
       }
     }
+  }
+  post{
+
   }
 }
