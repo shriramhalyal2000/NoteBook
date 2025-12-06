@@ -19,7 +19,8 @@ pipeline{
         sh """ 
         echo "Building frontend...."
         //add accurate dir for jenkins to navigate depending on where it is installed and how configured
-        cd ${WORKSPACE}/app/NoteBook_FrontEnd
+
+        cd /var/jenkins_home/workspace/Notebook-App_feature/app/NoteBook_FrontEnd
         docker build -t ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG} .
 
         echo "Building Backend...."
