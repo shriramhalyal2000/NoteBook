@@ -49,11 +49,9 @@ pipeline{
   }
   post{
     always{
-       sh """
         echo "build finished with status: ${CurrentBuild.CurrentResult}"
-       """
     }
-    sucess{
+    success{
       echo "Build was successful. Docker image pushed to the registry."
     }
     failure{
