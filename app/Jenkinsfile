@@ -47,4 +47,17 @@ pipeline{
       }
     }
   }
+  post{
+    always{
+       sh """
+        echo "build finished with status: ${CurrentBuild.CurrentResult}"
+       """
+    }
+    sucess{
+      echo "Build was successful. Docker image pushed to the registry."
+    }
+    failure{
+      sh echo "Build failed. Please check the logs for more details."
+    }
+  }
 }
