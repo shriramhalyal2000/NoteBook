@@ -17,7 +17,7 @@ pipeline{
       steps{
         sh """ 
         echo "Building frontend...."
-        cd /mnt/e/new Project/NoteBook/app/FrontEnd
+        cd /var/jenkins_home/workspace/Notebook-App_feature/NoteBook/app/FrontEnd
         docker build -t ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG} .
 
         echo "Building Backend...."
