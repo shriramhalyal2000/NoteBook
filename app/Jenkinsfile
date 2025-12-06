@@ -23,7 +23,7 @@ pipeline{
 
         echo "Building Backend...."
         cd ../NoteBook_BackEnd
-        docker build -t ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG} .
+        /usr/bin/docker build -t ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG} .
         """
       }
     }
