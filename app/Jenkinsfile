@@ -17,13 +17,13 @@ pipeline{
     stage('Build Docker Imagers'){
       steps{
         sh """ 
-        echo "Building frontend...."
-        cd /var/jenkins_home/workspace/Notebook-App_feature/app/NoteBook_FrontEnd
-        docker build -t ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG} .
+            echo "Building frontend...."
+            cd /var/jenkins_home/workspace/Notebook-App_feature/app/NoteBook_FrontEnd
+            docker build -t ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG} .
 
-        echo "Building Backend...."
-        cd ../NoteBook_BackEnd
-        docker build -t ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG} .
+            echo "Building Backend...."
+            cd ../NoteBook_BackEnd
+            docker build -t ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG} .
         """
       }
     }
@@ -33,16 +33,16 @@ pipeline{
         passwordVariable: 'DOCKER_PASS')])
         sh """
 
-        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --pass-stdin
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --pass-stdin
 
-        docker push ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}
-        docker push ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}
+            docker push ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}
+            docker push ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}
 
-        docker tag ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_FRONTEND}:latest
-        docker push ${REGISTRY}/${IMAGE_FRONTEND}:latest
+            docker tag ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_FRONTEND}:latest
+            docker push ${REGISTRY}/${IMAGE_FRONTEND}:latest
 
-        docker tag ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_BACKEND}:latest
-        docker push ${REGISTRY}/${IMAGE_BACKEND}:latest
+            docker tag ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_BACKEND}:latest
+            docker push ${REGISTRY}/${IMAGE_BACKEND}:latest
 
         """
       }
