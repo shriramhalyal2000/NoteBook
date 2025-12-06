@@ -1,12 +1,49 @@
 pipeline{
   agent any 
-  options{
-    timeout(time: 1, unit: 'SECONDS')
-  }
+  environment(
+    REGISTRY= "shriram2105"
+    IMAGE_FRONTEND= "notebook-frontend"
+    IMAGE_BACKEND= "notebook-backend"
+    IMAGE_TAG= "${env.BUILD_NUMBER}"
+    DOCKER_CREDS= "DOCKER_CREDS"
+  )
   stages{
-    stage('Example'){
+    stage("Checkout"){
       steps{
-        echo "hellow world"
+        checkout scm
+      }
+    }
+    stage('Build Docker Imagers'){
+      steps{
+        sh """ 
+        echo "Building frontend...."
+        cd NoteBook/app/NoteBook/FrontEnd
+        docker build -t ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG} .
+
+        echo "Building Backend...."
+        cd ../BackEnd
+        docker build -t ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG} .
+        """
+      }
+    }
+    stage("push Images to Docker hub"){
+      steps{
+        withCredentials([usernamePassword(credentialsId: DOCKER_CREDS , usernameVarible: 'DOCKER_USER',
+        passwordVariable: 'DOCKER_PASS')])
+        sh """
+
+        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --pass-stdin
+
+        docker push ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}
+        docker push ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}
+
+        docker tag ${REGISTRY}/${IMAGE_FRONTEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_FRONTEND}:latest
+        docker push ${REGISTRY}/${IMAGE_FRONTEND}:latest
+
+        docker tag ${REGISTRY}/${IMAGE_BACKEND}:${IMAGE_TAG}  ${REGISTRY}/${IMAGE_BACKEND}:latest
+        docker push ${REGISTRY}/${IMAGE_BACKEND}:latest
+
+        """
       }
     }
   }
