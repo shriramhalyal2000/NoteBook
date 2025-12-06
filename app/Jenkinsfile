@@ -1,12 +1,12 @@
 pipeline{
   agent any 
-  environment(
+  environment{}
     REGISTRY= "shriram2105"
     IMAGE_FRONTEND= "notebook-frontend"
     IMAGE_BACKEND= "notebook-backend"
     IMAGE_TAG= "${env.BUILD_NUMBER}"
     DOCKER_CREDS= "DOCKER_CREDS"
-  )
+}
   stages{
     stage("Checkout"){
       steps{
