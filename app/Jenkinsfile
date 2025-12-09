@@ -1,40 +1,48 @@
 pipeline{
   agent any
+  environment{
+    DOCKER_USER="shriram2105"
+  }
   stages{
     stage('Checkout'){
       steps{
         checkout scm
       }
     }
-    stage('Build Images'){
+    stage("Building Frontend"){
       steps{
-        sh """
-          cd /var/jenkins_home/workspace/Notebook-App_feature/app/NoteBook_FrontEnd
-
-          echo " Building Frontend"
-          docker build -t shriram2105/notebook-frontend:latest .
-
-          echo "Building Building Backend"
-          docker build -t shriram2105/notebook-backend:latest .
-        """
+        dir('app/NoteBook_FrontEnd'){
+          sh "docker build -t ${DKCER_USER}/notebook-frontend:latest ."
+        }
+      }
+    }
+    stage("Building"){
+      steps{
+        dir("app/NoteBook_BackEnd"){
+          sh "docker build -t ${DOCKER_USER}/notebook-backend:latest"
+        }
       }
     }
     stage("Pushing images to Hub"){
       steps{
-        sh """
-          docker login -u shriram2105
-
-          docker push shriram2105/notebook-frontend:latest
-
-          docker push shriram2105/notebook-backend:latest
-          
-        """
+        withCredentials([usernamePassword(
+          credentialsId: "dockerhub-creds",
+          usernameVaribale: "USER",
+          passwordVariable: "PASS"
+        )]){
+          sh '''
+            echo "$PASS" | docker login -u "$USER" --password-stdin
+            docker push ${DOCKER_USER}/notebook-frontend:latest
+            docker push ${DOCKER_USER}/notebook-backend:latest
+          '''
+        }
       }
     }
   }
   post{
     always {
         echo"build finished with status: ${currentBuild.currentResult}"
+        sh "docker logout || true"
     }
     success{
       echo "Build was successful. Docker image pushed to the registry."
