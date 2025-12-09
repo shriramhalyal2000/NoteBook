@@ -73,14 +73,14 @@ pipeline{
         echo "Backend:   http://localhost:5000"
         echo ""
         echo "=== Running Containers ==="
-        docker-compose -f app/docker-compose.yml ps
+        docker-compose -f app/docker-compose.yaml ps
       '''
     }
     failure{
        echo "Build failed. Please check the logs for more details."
        sh '''
         echo "=== Docker Compose Logs ==="
-        docker-compose -f app/docker-compose.yml logs --tail=100 || true
+        docker-compose -f app/docker-compose.yaml logs --tail=100 || true
       '''
     }
   }
