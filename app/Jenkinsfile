@@ -12,7 +12,7 @@ pipeline{
     stage("Building Frontend"){
       steps{
         dir('app/NoteBook_FrontEnd'){
-          sh "docker build -t ${DOKCER_USER}/notebook-frontend:latest ."
+          sh "docker build -t ${DOCKER_USER}/notebook-frontend:latest ."
         }
       }
     }
