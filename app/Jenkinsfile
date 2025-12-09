@@ -38,6 +38,26 @@ pipeline{
         }
       }
     }
+    stage('Deploying Locally'){
+      steps{
+        script{
+          dir('app'){
+            sh '''
+              docker compose down || true
+
+              docker compose rm -rf || true
+
+              docker compose pull || true
+
+              docker compose up -d 
+
+              docker compose ps
+              docker compose logs --tail=50
+            '''
+          }
+        }
+      }
+    }
   }
   post{
     always {
@@ -46,9 +66,22 @@ pipeline{
     }
     success{
       echo "Build was successful. Docker image pushed to the registry."
+      echo " Application deployed with docker compose ."
+      sh '''
+        echo "=== Application URLs ==="
+        echo "Frontend: http://localhost:3000"
+        echo "Backend:   http://localhost:5000"
+        echo ""
+        echo "=== Running Containers ==="
+        docker-compose -f app/docker-compose.yml ps
+      '''
     }
     failure{
        echo "Build failed. Please check the logs for more details."
+       sh '''
+        echo "=== Docker Compose Logs ==="
+        docker-compose -f app/docker-compose.yml logs --tail=100 || true
+      '''
     }
   }
 }
