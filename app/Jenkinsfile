@@ -12,14 +12,14 @@ pipeline{
     stage("Building Frontend"){
       steps{
         dir('app/NoteBook_FrontEnd'){
-          sh "docker build -t ${DKCER_USER}/notebook-frontend:latest ."
+          sh "docker build -t ${DOKCER_USER}/notebook-frontend:latest ."
         }
       }
     }
     stage("Building"){
       steps{
         dir("app/NoteBook_BackEnd"){
-          sh "docker build -t ${DOCKER_USER}/notebook-backend:latest"
+          sh "docker build -t ${DOCKER_USER}/notebook-backend:latest ."
         }
       }
     }
@@ -27,7 +27,7 @@ pipeline{
       steps{
         withCredentials([usernamePassword(
           credentialsId: "dockerhub-creds",
-          usernameVaribale: "USER",
+          usernameVariable: "USER",
           passwordVariable: "PASS"
         )]){
           sh '''
